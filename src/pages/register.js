@@ -1,26 +1,31 @@
-import { Box, Button, Checkbox, Divider, FormControlLabel, Grid, Paper, TextField, Typography, useTheme } from "@mui/material"
+import { Box, Button, Divider, Grid, Paper, TextField, Typography, useTheme, Modal, Alert, MenuItem } from "@mui/material"
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
-//import { loginRequest } from "../api/controllers/account-controller"
-//import NiceInputPassword from 'react-nice-input-password';
 import NumberFormat from 'react-number-format';
-import { useEffect } from "react";
+
 
 
 const Page = () => {
 
     const theme = useTheme()
-    const navigate = useNavigate()
+    const history = useNavigate()
     const [rememberMe, setRememberMe] = useState(false)
     const [phone, setPhone] = useState("")
     const [password, setPassword] = useState("")
-
+    const [rePassword, setRePassword] = useState("")
+    const [userName, setUserName] = useState("")
+    const [phoneModalOpen, setPhoneModalOpen] = useState(false)
+    const [confirmationCode, setConfirmationCode] = useState("")
 
     const handleSubmit = async (e) => {
-        e.preventDefault()
-
+        e && e.preventDefault()
+        setPhoneModalOpen(true)
     }
 
+
+    const handlePhoneConfirm = async (e) => {
+        e.preventDefault()
+    }
     return (
         <Box container sx={{
             height: '100vh',
@@ -86,7 +91,19 @@ const Page = () => {
                         />
 
                     </Grid>
+                    <Grid item xs={12} md={12}>
+                        <TextField
+                            name="userName"
+                            value={userName}
+                            type="text"
+                            style={{
+                                width: "100%"
+                            }}
+                            onChange={(e) => setUserName(e.target.value)}
+                            label="Kulalnıcı Adı"
 
+                        />
+                    </Grid>
                     <Grid item xs={12} md={12}>
                         <TextField
                             name="parola"
@@ -100,7 +117,19 @@ const Page = () => {
 
                         />
                     </Grid>
+                    <Grid item xs={12} md={12}>
+                        <TextField
+                            name="parola"
+                            value={rePassword}
+                            type="password"
+                            style={{
+                                width: "100%"
+                            }}
+                            onChange={(e) => setRePassword(e.target.value)}
+                            label="Parolanız Tekrar"
 
+                        />
+                    </Grid>
                     {/*   <Grid item xs={12} md={12}>
                         <FormControlLabel
                             control={<Checkbox
@@ -121,18 +150,18 @@ const Page = () => {
                             type="submit"
                             disableElevation
                         >
-                            GİRİŞ YAP
+                            Kayıt Ol
                         </Button>
                     </Grid>
 
                     <Grid item xs={12} md={12}>
                         <Button
                             variant='outlined'
-                            onClick={() => navigate('/register')}
+                            onClick={() => history('/')}
                             fullWidth
                             size='large'
                             disableElevation
-                        >Kayıt Ol</Button>
+                        >Giriş Yap</Button>
                     </Grid>
 
                     {/*  <Grid item xs={12} md={12}>
@@ -149,8 +178,43 @@ const Page = () => {
 
                 </Grid>
             </Paper>
-
+            <Modal
+                open={phoneModalOpen}
+                onClose={() => setPhoneModalOpen(false)}
+                sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    width: "100vw",
+                    height: "100vh"
+                }}
+            >
+                <Paper sx={{
+                    padding: theme.spacing(3),
+                    display: "flex",
+                    alignItems: "center",
+                    flexDirection: "column"
+                }}>
+                    <Typography sx={{ margin: theme.spacing(1) }} variant="h6" component="h2">
+                        SMS İle Gelen Kodu Giriniz.
+                    </Typography>
+                    <TextField
+                        variant="outlined"
+                        label="SMS Kodu"
+                        sx={{
+                            width: "100%",
+                            margin: theme.spacing(1)
+                        }}
+                        onChange={(e) => setConfirmationCode(e.target.value)}
+                        value={confirmationCode}
+                    />
+                    <Button sx={{ margin: theme.spacing(1) }} onClick={handlePhoneConfirm} variant="contained" color="secondary">
+                        Onayla
+                    </Button>
+                </Paper>
+            </Modal>
         </Box >
+
 
 
     )

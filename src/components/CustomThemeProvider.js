@@ -12,23 +12,18 @@ const CustomThemeProvider = ({ children }) => {
         palette: {
             type: 'light',
             primary: {
-                main: '#d05515',
-                contrastText: '#ffffff',
+                main: '#8e44ad',
             },
             secondary: {
-                main: '#3f3f3f',
-                contrastText: '#ffffff',
-            },
-            text: {
-                primary: '#3f3f3f',
-            },
-            background: {
-                default: '#f5f5f5',
+                main: '#f1c40f',
             },
         },
         typography: {
-            fontFamily: 'Poppins',
+            fontFamily: 'Rubik',
         },
+        shape: {
+            borderRadius: 8,
+          },
     },
         coreTrTR,
     )
